@@ -22,7 +22,7 @@ namespace GraphQLOne.Queries
         {
             return _ctox.Platforms;
         }
-
+        
         [UseDbContext(typeof(AppDBContext))]
         [UseFiltering]
         [UseSorting]
