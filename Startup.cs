@@ -1,6 +1,8 @@
 using GraphQL.Server.Ui.Voyager;
 using GraphQLOne.Data;
 using GraphQLOne.GraphQLTypes;
+using GraphQLOne.GraphQLTypes.Mutations;
+using GraphQLOne.GraphQLTypes.Subscriptions;
 using GraphQLOne.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,11 +37,14 @@ namespace GraphQLOne
             services
                     .AddGraphQLServer()
                     .AddQueryType<QLQuery>()
+                    .AddMutationType<Mutation>()
+                    .AddSubscriptionType<Subscription>()
                     .AddType<PlatformType>()
                     .AddFiltering()
                     .AddSorting()
                     // allow to query a child object
-                    .AddProjections();
+                    .AddProjections()
+                    .AddInMemorySubscriptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +54,9 @@ namespace GraphQLOne
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // for the GraphQL Subscriptions 
+            app.UseWebSockets();
 
             app.UseRouting();
 
